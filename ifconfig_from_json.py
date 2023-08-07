@@ -9,12 +9,12 @@ json_data = json_file.read()
 
 json_dictionary = json.loads(json_data)  #file is opened, read and parsed into a dictionary (in this order)
 
-for config in json_dictionary["IPConfiguration"]:
+for config in json_dictionary["IPConfiguration"]: #IPConfiguration is the single key which is assigned to a list of aspects
     main_interface_mtu = 0
     if (config["mtu"] >= main_interface_mtu):
             main_interface_mtu = config["mtu"]
-    if (str(config["vlan"]) == "-1"):
-        os.system("sudo ip addr add {}/{} dev {}".format(config["localIp"],config["localPrefix"],config["interface"]))
+    if (str(config["vlan"]) == "-1"): #no vlan 
+        os.system("sudo ip addr add {}/{} dev {}".format(config["localIp"],config["localPrefix"],config["interface"])) 
         os.system("sudo ip link set {} mtu {}".format(config["interface"],main_interface_mtu))  #mtu set up
         os.system("sudo ip link set {} {}".format(config["interface"],config["status"]))   #vlan is up
     else:
